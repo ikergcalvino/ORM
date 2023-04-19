@@ -1,138 +1,136 @@
 package gei.id.tutelado.dao;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
 import gei.id.tutelado.configuracion.Configuracion;
 import gei.id.tutelado.model.EntradaLog;
 import gei.id.tutelado.model.Usuario;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import java.util.List;
+
 public class EntradaLogDaoJPA implements EntradaLogDao {
 
-	private EntityManagerFactory emf; 
-	private EntityManager em;
-    
-	@Override
-	public void setup (Configuracion config) {
-		this.emf = (EntityManagerFactory) config.get("EMF");
-	}
-	
+    private EntityManagerFactory emf;
+    private EntityManager em;
 
-	@Override
-	public EntradaLog almacena(EntradaLog log) {
-		try {
-				
-			em = emf.createEntityManager();
-			em.getTransaction().begin();
+    @Override
+    public void setup(Configuracion config) {
+        this.emf = (EntityManagerFactory) config.get("EMF");
+    }
 
-			em.persist(log);
 
-			em.getTransaction().commit();
-			em.close();
-		
-		} catch (Exception ex ) {
-			if (em!=null && em.isOpen()) {
-				if (em.getTransaction().isActive()) em.getTransaction().rollback();
-				em.close();
-				throw(ex);
-			}
-		}
-		return log;
-	}
+    @Override
+    public EntradaLog almacena(EntradaLog log) {
+        try {
 
-	@Override
-	public EntradaLog modifica(EntradaLog log) {
-		try {
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
 
-			em = emf.createEntityManager();		
-			em.getTransaction().begin();
+            em.persist(log);
 
-			log = em.merge (log);
+            em.getTransaction().commit();
+            em.close();
 
-			em.getTransaction().commit();
-			em.close();
-			
-		} catch (Exception ex ) {
-			if (em!=null && em.isOpen()) {
-				if (em.getTransaction().isActive()) em.getTransaction().rollback();
-				em.close();
-				throw(ex);
-			}
-		}
-		return log;
-	}
+        } catch (Exception ex) {
+            if (em != null && em.isOpen()) {
+                if (em.getTransaction().isActive()) em.getTransaction().rollback();
+                em.close();
+                throw (ex);
+            }
+        }
+        return log;
+    }
 
-	@Override
-	public void elimina(EntradaLog log) {
-		try {
+    @Override
+    public EntradaLog modifica(EntradaLog log) {
+        try {
 
-			em = emf.createEntityManager();
-			em.getTransaction().begin();
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
 
-			EntradaLog logTmp = em.find (EntradaLog.class, log.getId());
-			em.remove (logTmp);
+            log = em.merge(log);
 
-			em.getTransaction().commit();
-			em.close();
-			
-		} catch (Exception ex ) {
-			if (em!=null && em.isOpen()) {
-				if (em.getTransaction().isActive()) em.getTransaction().rollback();
-				em.close();
-				throw(ex);
-			}
-		}
-	}
+            em.getTransaction().commit();
+            em.close();
 
-	@Override
-	public EntradaLog recuperaPorCodigo(String codigo) {
+        } catch (Exception ex) {
+            if (em != null && em.isOpen()) {
+                if (em.getTransaction().isActive()) em.getTransaction().rollback();
+                em.close();
+                throw (ex);
+            }
+        }
+        return log;
+    }
 
-		List<EntradaLog> entradas=null;
-		
-		try {
-			em = emf.createEntityManager();
-			em.getTransaction().begin();
+    @Override
+    public void elimina(EntradaLog log) {
+        try {
 
-			entradas = em.createNamedQuery("EntradaLog.recuperaPorCodigo", EntradaLog.class)
-					.setParameter("codigo", codigo).getResultList(); 
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
 
-			em.getTransaction().commit();
-			em.close();
-		} catch (Exception ex ) {
-			if (em!=null && em.isOpen()) {
-				if (em.getTransaction().isActive()) em.getTransaction().rollback();
-				em.close();
-				throw(ex);
-			}
-		}
-		return (entradas.size()==0?null:entradas.get(0));
-	}
+            EntradaLog logTmp = em.find(EntradaLog.class, log.getId());
+            em.remove(logTmp);
 
-	
-	@Override
-	public List<EntradaLog> recuperaTodasUsuario(Usuario u) {
-		List <EntradaLog> entradas=null;
+            em.getTransaction().commit();
+            em.close();
 
-		try {
-			em = emf.createEntityManager();
-			em.getTransaction().begin();
+        } catch (Exception ex) {
+            if (em != null && em.isOpen()) {
+                if (em.getTransaction().isActive()) em.getTransaction().rollback();
+                em.close();
+                throw (ex);
+            }
+        }
+    }
 
-			entradas = em.createNamedQuery("EntradaLog.recuperaTodasUsuario", EntradaLog.class).setParameter("u", u).getResultList(); 
+    @Override
+    public EntradaLog recuperaPorCodigo(String codigo) {
 
-			em.getTransaction().commit();
-			em.close();	
+        List<EntradaLog> entradas = null;
 
-		}
-		catch (Exception ex ) {
-			if (em!=null && em.isOpen()) {
-				if (em.getTransaction().isActive()) em.getTransaction().rollback();
-				em.close();
-				throw(ex);
-			}
-		}
+        try {
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
 
-		return entradas;
-	}
+            entradas = em.createNamedQuery("EntradaLog.recuperaPorCodigo", EntradaLog.class)
+                    .setParameter("codigo", codigo).getResultList();
+
+            em.getTransaction().commit();
+            em.close();
+        } catch (Exception ex) {
+            if (em != null && em.isOpen()) {
+                if (em.getTransaction().isActive()) em.getTransaction().rollback();
+                em.close();
+                throw (ex);
+            }
+        }
+        return (entradas.size() == 0 ? null : entradas.get(0));
+    }
+
+
+    @Override
+    public List<EntradaLog> recuperaTodasUsuario(Usuario u) {
+        List<EntradaLog> entradas = null;
+
+        try {
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+
+            entradas = em.createNamedQuery("EntradaLog.recuperaTodasUsuario", EntradaLog.class).setParameter("u", u).getResultList();
+
+            em.getTransaction().commit();
+            em.close();
+
+        } catch (Exception ex) {
+            if (em != null && em.isOpen()) {
+                if (em.getTransaction().isActive()) em.getTransaction().rollback();
+                em.close();
+                throw (ex);
+            }
+        }
+
+        return entradas;
+    }
 }

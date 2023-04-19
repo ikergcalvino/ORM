@@ -5,16 +5,13 @@ import gei.id.tutelado.configuracion.ConfiguracionJPA;
 
 /**
  * Hello world!
- *
  */
-public class App 
-{
-    public static void main( String[] args )
-    {
-    	Configuracion cfg;
-    	cfg = new ConfiguracionJPA();
-    	cfg.start();
-    	cfg.endUp();
+public class App {
+    public static void main(String[] args) {
+        Configuracion cfg;
+        cfg = new ConfiguracionJPA();
+        cfg.start();
+        cfg.endUp();
     }
 }
 
