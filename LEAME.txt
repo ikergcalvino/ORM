@@ -1,4 +1,4 @@
-Para utilizar con eclipse: 
+Para utilizar con eclipse:
 
 mvn eclipse:eclipse
 
@@ -10,5 +10,3 @@ Para exportar o codigo entregable:
 mvn assembly:assembly -D maven.test.skip=true
 
 (crea en "target" un ficheiro "TuteladoJPA-1.0-src.zip")
-
-
