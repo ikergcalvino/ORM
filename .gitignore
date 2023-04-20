@@ -1,3 +1,6 @@
+# Target directories.
+target/
+
 # IntelliJ IDEA configuration.
 .idea/
 *.iml
