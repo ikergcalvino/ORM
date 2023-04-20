@@ -14,8 +14,10 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!-- Entity classes -->
-        <class>gei.id.tutelado.model.Usuario</class>
-        <class>gei.id.tutelado.model.EntradaLog</class>
+        <class>gei.id.tutelado.model.Persoa</class>
+        <class>gei.id.tutelado.model.Socio</class>
+        <class>gei.id.tutelado.model.Traballador</class>
+        <class>gei.id.tutelado.model.Actividade</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
@@ -36,12 +38,9 @@
                 create-drop: drop the schema at the end of the session.
 
                 Ollo! Lembrar facer EntityManagerFactory.close()
-
             -->
 
         </properties>
     </persistence-unit>
 
-
 </persistence>
-
