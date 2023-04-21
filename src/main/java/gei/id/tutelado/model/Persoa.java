@@ -2,6 +2,7 @@ package gei.id.tutelado.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @TableGenerator(name = "xeradorIdsPersoas", table = "taboa_ids",
         pkColumnName = "nome_id", pkColumnValue = "idPersoa",
@@ -61,6 +62,19 @@ public abstract class Persoa {
 
     public void setDataNacemento(LocalDate dataNacemento) {
         this.dataNacemento = dataNacemento;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Persoa)) return false;
+        Persoa persoa = (Persoa) o;
+        return Objects.equals(getId(), persoa.getId()) && Objects.equals(getDni(), persoa.getDni()) && Objects.equals(getNome(), persoa.getNome()) && Objects.equals(getDataNacemento(), persoa.getDataNacemento());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getDni(), getNome(), getDataNacemento());
     }
 
 }

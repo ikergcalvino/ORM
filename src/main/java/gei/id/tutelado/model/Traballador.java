@@ -2,6 +2,7 @@ package gei.id.tutelado.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @NamedQueries({
         @NamedQuery(name = "Traballador.recuperaTraballadoresDePiscina",
@@ -55,6 +56,20 @@ public class Traballador extends Persoa {
 
     public void setActividade(Actividade actividade) {
         this.actividade = actividade;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Traballador)) return false;
+        if (!super.equals(o)) return false;
+        Traballador that = (Traballador) o;
+        return Objects.equals(getPosto(), that.getPosto()) && Objects.equals(getSalario(), that.getSalario()) && Objects.equals(getDataContratacion(), that.getDataContratacion()) && Objects.equals(getActividade(), that.getActividade());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getPosto(), getSalario(), getDataContratacion(), getActividade());
     }
 
 }

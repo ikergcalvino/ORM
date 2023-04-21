@@ -1,10 +1,7 @@
 package gei.id.tutelado.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 @TableGenerator(name = "xeradorIdsActividades", table = "taboa_ids",
         pkColumnName = "nome_id", pkColumnValue = "idActividade",
@@ -70,6 +67,19 @@ public class Actividade {
 
     public SortedSet<Actividade> getTraballadores() {
         return traballadores;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Actividade)) return false;
+        Actividade that = (Actividade) o;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getNome(), that.getNome()) && Objects.equals(getPiscina(), that.getPiscina()) && Objects.equals(getMaterial(), that.getMaterial()) && Objects.equals(getTraballadores(), that.getTraballadores());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getNome(), getPiscina(), getMaterial(), getTraballadores());
     }
 
 }
