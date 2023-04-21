@@ -1,13 +1,10 @@
 package gei.id.tutelado.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @NamedQuery(name = "Socio.recuperaSociosMayoresQue",
         query = "SELECT s FROM Socio s WHERE (CURRENT_DATE() - s.dataNacemento) >= :dataAlta")
@@ -21,8 +18,8 @@ public class Socio extends Persoa {
     @Column(nullable = false)
     private LocalDate dataAlta;
 
-    @ManyToMany()
-    private List<Actividade> actividades = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY)
+    private final SortedSet<Actividade> actividades = new TreeSet<>();
 
     public String getTelefono() {
         return telefono;
@@ -40,12 +37,13 @@ public class Socio extends Persoa {
         this.dataAlta = dataAlta;
     }
 
-    public List<Actividade> getActividades() {
+    public SortedSet<Actividade> getActividades() {
         return actividades;
     }
 
-    public void setActividades(List<Actividade> actividades) {
-        this.actividades = actividades;
+    public void engadirActividade(Actividade actividade) {
+        // É un sorted set, engadimos sempre por orde de nome
+        this.actividades.add(actividade);
     }
 
     @Override

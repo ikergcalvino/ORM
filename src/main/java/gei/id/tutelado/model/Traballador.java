@@ -12,7 +12,7 @@ import java.util.Objects;
 })
 
 @Entity
-public class Traballador extends Persoa {
+public class Traballador extends Persoa implements Comparable<Traballador> {
 
     @Column(nullable = false)
     private String posto;
@@ -22,7 +22,7 @@ public class Traballador extends Persoa {
     @Column(nullable = false)
     private LocalDate dataContratacion;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Actividade actividade;
 
@@ -70,6 +70,11 @@ public class Traballador extends Persoa {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getPosto(), getSalario(), getDataContratacion(), getActividade());
+    }
+
+    @Override
+    public int compareTo(Traballador other) {
+        return this.getDni().compareToIgnoreCase(other.getDni());
     }
 
 }

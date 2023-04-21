@@ -19,7 +19,7 @@ import java.util.*;
 })
 
 @Entity
-public class Actividade {
+public class Actividade implements Comparable<Actividade> {
 
     @Id
     @GeneratedValue(generator = "xeradorIdsActividades")
@@ -31,11 +31,12 @@ public class Actividade {
     @Column(nullable = false)
     private String piscina;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private final List<String> material = new ArrayList<>();
 
-    @OneToMany()
-    private final SortedSet<Actividade> traballadores = new TreeSet<>();
+    @OneToMany(fetch = FetchType.LAZY)
+    //@OrderBy("dni ASC")
+    private final SortedSet<Traballador> traballadores = new TreeSet<>();
 
     public Long getId() {
         return id;
@@ -65,8 +66,20 @@ public class Actividade {
         return material;
     }
 
-    public SortedSet<Actividade> getTraballadores() {
+    public void engadirMaterial(String material) {
+        this.material.add(material);
+    }
+
+    public SortedSet<Traballador> getTraballadores() {
         return traballadores;
+    }
+
+    // Metodo de conveniencia para asegurarnos de que actualizamos os dous extremos da asociación ao mesmo tempo
+    public void engadirTraballador(Traballador traballador) {
+        if (traballador.getActividade() != null) throw new RuntimeException();
+        traballador.setActividade(this);
+        // É un sorted set, engadimos sempre por orde de dni
+        this.traballadores.add(traballador);
     }
 
     @Override
@@ -80,6 +93,11 @@ public class Actividade {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getNome(), getPiscina(), getMaterial(), getTraballadores());
+    }
+
+    @Override
+    public int compareTo(Actividade other) {
+        return this.getNome().compareToIgnoreCase(other.getNome());
     }
 
 }
