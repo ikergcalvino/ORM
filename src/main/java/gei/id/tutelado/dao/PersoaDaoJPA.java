@@ -5,8 +5,6 @@ import gei.id.tutelado.model.Persoa;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import java.util.List;
-import java.util.Objects;
 
 public class PersoaDaoJPA implements PersoaDao {
 
@@ -20,7 +18,9 @@ public class PersoaDaoJPA implements PersoaDao {
 
     @Override
     public Persoa almacena(Persoa persoa) {
+
         try {
+
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
@@ -28,6 +28,7 @@ public class PersoaDaoJPA implements PersoaDao {
 
             em.getTransaction().commit();
             em.close();
+
         } catch (Exception ex) {
             if (em != null && em.isOpen()) {
                 if (em.getTransaction().isActive()) em.getTransaction().rollback();
@@ -35,12 +36,15 @@ public class PersoaDaoJPA implements PersoaDao {
                 throw (ex);
             }
         }
+
         return persoa;
     }
 
     @Override
     public Persoa modifica(Persoa persoa) {
+
         try {
+
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
@@ -48,6 +52,7 @@ public class PersoaDaoJPA implements PersoaDao {
 
             em.getTransaction().commit();
             em.close();
+
         } catch (Exception ex) {
             if (em != null && em.isOpen()) {
                 if (em.getTransaction().isActive()) em.getTransaction().rollback();
@@ -55,12 +60,15 @@ public class PersoaDaoJPA implements PersoaDao {
                 throw (ex);
             }
         }
+
         return persoa;
     }
 
     @Override
     public void elimina(Persoa persoa) {
+
         try {
+
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
@@ -69,6 +77,7 @@ public class PersoaDaoJPA implements PersoaDao {
 
             em.getTransaction().commit();
             em.close();
+
         } catch (Exception ex) {
             if (em != null && em.isOpen()) {
                 if (em.getTransaction().isActive()) em.getTransaction().rollback();
@@ -76,20 +85,24 @@ public class PersoaDaoJPA implements PersoaDao {
                 throw (ex);
             }
         }
+
     }
 
     @Override
     public Persoa recuperaPorDni(String dni) {
-        List<Persoa> persoas = null;
+        Persoa persoa = null;
 
         try {
+
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
-            persoas = em.createNamedQuery("Persoa.recuperaPorDni", Persoa.class).setParameter("dni", dni).getResultList();
+            persoa = em.createNamedQuery("Persoa.recuperaPorDni", Persoa.class)
+                    .setParameter("dni", dni).getSingleResult();
 
             em.getTransaction().commit();
             em.close();
+
         } catch (Exception ex) {
             if (em != null && em.isOpen()) {
                 if (em.getTransaction().isActive()) em.getTransaction().rollback();
@@ -97,7 +110,8 @@ public class PersoaDaoJPA implements PersoaDao {
                 throw (ex);
             }
         }
-        return (Objects.requireNonNull(persoas).size() != 0 ? persoas.get(0) : null);
+
+        return persoa;
     }
 
 }
