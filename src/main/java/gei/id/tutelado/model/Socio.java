@@ -7,7 +7,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 @NamedQuery(name = "Socio.recuperaSociosMayoresQue",
-        query = "SELECT s FROM Socio s WHERE (CURRENT_DATE() - s.dataNacemento) >= :dataAlta")
+        query = "SELECT s FROM Socio s WHERE (:dataActual - s.dataNacemento) >= :idade")
 
 @Entity
 public class Socio extends Persoa {
