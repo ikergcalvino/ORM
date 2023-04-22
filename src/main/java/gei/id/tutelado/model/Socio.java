@@ -12,14 +12,14 @@ import java.util.TreeSet;
 @Entity
 public class Socio extends Persoa {
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    private final SortedSet<Actividade> actividades = new TreeSet<>();
+
     @Column(unique = true)
     private String telefono;
 
     @Column(nullable = false)
     private LocalDate dataAlta;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    private final SortedSet<Actividade> actividades = new TreeSet<>();
 
     public String getTelefono() {
         return telefono;

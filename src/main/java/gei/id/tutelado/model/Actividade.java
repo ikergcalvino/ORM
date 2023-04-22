@@ -21,6 +21,13 @@ import java.util.*;
 @Entity
 public class Actividade implements Comparable<Actividade> {
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private final List<String> material = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY)
+    //@OrderBy("dni ASC")
+    private final SortedSet<Traballador> traballadores = new TreeSet<>();
+
     @Id
     @GeneratedValue(generator = "xeradorIdsActividades")
     private Long id;
@@ -30,13 +37,6 @@ public class Actividade implements Comparable<Actividade> {
 
     @Column(nullable = false)
     private String piscina;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    private final List<String> material = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY)
-    //@OrderBy("dni ASC")
-    private final SortedSet<Traballador> traballadores = new TreeSet<>();
 
     public Long getId() {
         return id;
