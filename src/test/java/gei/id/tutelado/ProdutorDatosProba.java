@@ -18,25 +18,25 @@ public class ProdutorDatosProba {
 
     private EntityManagerFactory emf = null;
 
-    private final Socio s0 = new Socio();
-    private final Socio s1 = new Socio();
+    public final Socio s0 = new Socio();
+    public final Socio s1 = new Socio();
     private final List<Socio> listaxeS = new ArrayList<>();
 
-    private final Traballador t0 = new Traballador();
-    private final Traballador t1 = new Traballador();
+    public final Traballador t0 = new Traballador();
+    public final Traballador t1 = new Traballador();
     private final List<Traballador> listaxeT = new ArrayList<>();
 
-    private final Actividade a0 = new Actividade();
-    private final Actividade a1 = new Actividade();
+    public final Actividade a0 = new Actividade();
+    public final Actividade a1 = new Actividade();
     private final List<Actividade> listaxeA = new ArrayList<>();
 
     public void setup(Configuracion config) {
         this.emf = (EntityManagerFactory) config.get("EMF");
     }
 
-    public void creaSociosSoltos() {
+    public void creaPersoasSoltas() {
 
-        // Crea dous socios EN MEMORIA: s0, s1
+        // Crea dous socios e dous traballadores EN MEMORIA: s0, s1, t0, t1
         // SEN actividades
 
         this.s0.setDni("000S");
@@ -46,20 +46,13 @@ public class ProdutorDatosProba {
         this.s0.setDataAlta(LocalDate.now());
 
         this.s1.setDni("111S");
-        this.s1.setNome("Usuaria un");
+        this.s1.setNome("Socia un");
         this.s1.setDataNacemento(LocalDate.now().minusYears(13));
         this.s1.setTelefono("600000002");
         this.s1.setDataAlta(LocalDate.now());
 
         this.listaxeS.add(0, s0);
         this.listaxeS.add(1, s1);
-
-    }
-
-    public void creaTraballadoresSoltos() {
-
-        // Crea dous traballadores EN MEMORIA: t0, t1
-        // SEN actividades
 
         this.t0.setDni("000T");
         this.t0.setNome("Traballador cero");
@@ -100,10 +93,9 @@ public class ProdutorDatosProba {
 
     }
 
-    public void creaSociosETraballadoresConActividades() {
+    public void creaPersoasConActividades() {
 
-        this.creaSociosSoltos();
-        this.creaTraballadoresSoltos();
+        this.creaPersoasSoltas();
         this.creaActividadesSoltas();
 
         this.s0.engadirActividade(this.a0);
