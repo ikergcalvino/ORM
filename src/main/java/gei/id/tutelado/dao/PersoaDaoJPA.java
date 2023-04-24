@@ -119,4 +119,30 @@ public class PersoaDaoJPA implements PersoaDao {
         return persoa;
     }
 
+    @Override
+    public List<Persoa> recuperaTodas() {
+        List<Persoa> persoas = null;
+
+        try {
+
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+
+            persoas = em.createNamedQuery("Persoa.recuperaTodas", Persoa.class)
+                    .getResultList();
+
+            em.getTransaction().commit();
+            em.close();
+
+        } catch (Exception ex) {
+            if (em != null && em.isOpen()) {
+                if (em.getTransaction().isActive()) em.getTransaction().rollback();
+                em.close();
+                throw (ex);
+            }
+        }
+
+        return persoas;
+    }
+
 }

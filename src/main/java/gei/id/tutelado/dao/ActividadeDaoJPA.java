@@ -120,6 +120,32 @@ public class ActividadeDaoJPA implements ActividadeDao {
     }
 
     @Override
+    public List<Actividade> recuperaTodas() {
+        List<Actividade> actividades = null;
+
+        try {
+
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+
+            actividades = em.createNamedQuery("Actividade.recuperaTodas", Actividade.class)
+                    .getResultList();
+
+            em.getTransaction().commit();
+            em.close();
+
+        } catch (Exception ex) {
+            if (em != null && em.isOpen()) {
+                if (em.getTransaction().isActive()) em.getTransaction().rollback();
+                em.close();
+                throw (ex);
+            }
+        }
+
+        return actividades;
+    }
+
+    @Override
     public List<Actividade> recuperaActividadesConMinSocios(Integer minSocios) {
         List<Actividade> actividades = null;
 
