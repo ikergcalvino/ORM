@@ -6,8 +6,8 @@ import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-@NamedQuery(name = "Socio.recuperaSociosMayoresQue",
-        query = "SELECT s FROM Socio s WHERE (:dataActual - s.dataNacemento) >= :idade")
+@NamedQuery(name = "Socio.recuperaSociosConActividadesEn",
+        query = "SELECT s FROM Socio s LEFT JOIN FETCH s.actividades a WHERE a.piscina = :piscina")
 
 @Entity
 public class Socio extends Persoa {

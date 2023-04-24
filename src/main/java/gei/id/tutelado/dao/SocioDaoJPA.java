@@ -5,7 +5,6 @@ import gei.id.tutelado.model.Socio;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import java.time.LocalDate;
 import java.util.List;
 
 public class SocioDaoJPA implements SocioDao {
@@ -19,7 +18,7 @@ public class SocioDaoJPA implements SocioDao {
     }
 
     @Override
-    public List<Socio> recuperaSociosMayoresQue(Integer idade) {
+    public List<Socio> recuperaSociosConActividadesEn(String piscina) {
         List<Socio> socios = null;
 
         try {
@@ -27,10 +26,8 @@ public class SocioDaoJPA implements SocioDao {
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
-            LocalDate dataActual = LocalDate.now();
-            socios = em.createNamedQuery("Socio.recuperaSociosMayoresQue", Socio.class)
-                    .setParameter("dataActual", dataActual)
-                    .setParameter("idade", idade)
+            socios = em.createNamedQuery("Socio.recuperaSociosConActividadesEn", Socio.class)
+                    .setParameter("piscina", piscina)
                     .getResultList();
 
             em.getTransaction().commit();
