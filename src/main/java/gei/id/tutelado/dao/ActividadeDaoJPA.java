@@ -98,8 +98,12 @@ public class ActividadeDaoJPA implements ActividadeDao {
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
-            actividade = em.createNamedQuery("Actividade.recuperaPorNome", Actividade.class)
-                    .setParameter("nome", nome).getSingleResult();
+            List<Actividade> resultados = em.createNamedQuery("Actividade.recuperaPorNome", Actividade.class)
+                    .setParameter("nome", nome).getResultList();
+
+            if (!resultados.isEmpty()) {
+                actividade = resultados.get(0);
+            }
 
             em.getTransaction().commit();
             em.close();

@@ -5,6 +5,7 @@ import gei.id.tutelado.model.Persoa;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.List;
 
 public class PersoaDaoJPA implements PersoaDao {
 
@@ -97,8 +98,12 @@ public class PersoaDaoJPA implements PersoaDao {
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
-            persoa = em.createNamedQuery("Persoa.recuperaPorDni", Persoa.class)
-                    .setParameter("dni", dni).getSingleResult();
+            List<Persoa> resultados = em.createNamedQuery("Persoa.recuperaPorDni", Persoa.class)
+                    .setParameter("dni", dni).getResultList();
+
+            if (!resultados.isEmpty()) {
+                persoa = resultados.get(0);
+            }
 
             em.getTransaction().commit();
             em.close();
