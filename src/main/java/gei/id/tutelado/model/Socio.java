@@ -7,7 +7,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 @NamedQuery(name = "Socio.recuperaSociosConActividadesEn",
-        query = "SELECT s FROM Socio s LEFT JOIN FETCH s.actividades a WHERE a.piscina = :piscina")
+        query = "SELECT s FROM Socio s LEFT OUTER JOIN s.actividades a ON a.piscina = :piscina")
 
 @Entity
 public class Socio extends Persoa {
