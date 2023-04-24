@@ -52,8 +52,8 @@ public class TraballadorDaoJPA implements TraballadorDao {
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
-            salario = em.createNamedQuery("Traballador.recuperaSalarioMedio", Traballador.class)
-                    .getSingleResult().getSalario();
+            salario = em.createNamedQuery("Traballador.recuperaSalarioMedio", Double.class)
+                    .getSingleResult();
 
             em.getTransaction().commit();
             em.close();
