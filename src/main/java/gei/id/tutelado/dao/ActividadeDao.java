@@ -18,6 +18,9 @@ public interface ActividadeDao {
 
     Actividade recuperaPorNome(String nome);
 
+    // QUERIES ADICIONAIS
+    List<Actividade> recuperaTodas();
+
     List<Actividade> recuperaActividadesConMinSocios(Integer minSocios);
 
 }

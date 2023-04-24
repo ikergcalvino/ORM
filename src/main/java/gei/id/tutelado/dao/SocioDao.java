@@ -9,6 +9,7 @@ public interface SocioDao {
 
     void setup(Configuracion config);
 
+    // QUERIES ADICIONAIS
     List<Socio> recuperaSociosMayoresQue(Integer idade);
 
 }

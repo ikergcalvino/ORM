@@ -9,6 +9,7 @@ public interface TraballadorDao {
 
     void setup(Configuracion config);
 
+    // QUERIES ADICIONAIS
     List<Traballador> recuperaTraballadoresDePiscina(String piscina);
 
     Double recuperaSalarioMedio();
