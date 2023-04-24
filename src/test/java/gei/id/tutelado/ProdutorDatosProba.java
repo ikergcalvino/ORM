@@ -99,6 +99,7 @@ public class ProdutorDatosProba {
         this.creaActividadesSoltas();
 
         this.s0.engadirActividade(this.a0);
+        this.s0.engadirActividade(this.a1);
         this.s1.engadirActividade(this.a1);
 
         this.t0.setActividade(this.a1);
