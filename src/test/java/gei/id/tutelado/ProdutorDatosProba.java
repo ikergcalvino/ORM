@@ -10,104 +10,160 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ProdutorDatosProba {
 
     // Crea un conxunto de obxectos para utilizar nos casos de proba
 
+    public Socio s0, s1, s2;
+    public List<Socio> listaxeS;
+
+    public Traballador t0, t1, t2;
+    public List<Traballador> listaxeT;
+
+    public List<Persoa> listaxeP;
+
+    public Actividade a0, a1, a2;
+    public List<Actividade> listaxeA;
+
     private EntityManagerFactory emf = null;
-
-    public final Socio s0 = new Socio();
-    public final Socio s1 = new Socio();
-    private final List<Socio> listaxeS = new ArrayList<>();
-
-    public final Traballador t0 = new Traballador();
-    public final Traballador t1 = new Traballador();
-    private final List<Traballador> listaxeT = new ArrayList<>();
-
-    public final Actividade a0 = new Actividade();
-    public final Actividade a1 = new Actividade();
-    private final List<Actividade> listaxeA = new ArrayList<>();
 
     public void setup(Configuracion config) {
         this.emf = (EntityManagerFactory) config.get("EMF");
     }
 
-    public void creaPersoasSoltas() {
+    public void creaTraballadoresSoltos() {
 
-        // Crea dous socios e dous traballadores EN MEMORIA: s0, s1, t0, t1
-        // SEN actividades
+        this.t0 = new Traballador();
+        this.t0.setDni("100A");
+        this.t0.setNome("Trabajador cero");
+        this.t0.setDataNacemento(LocalDate.of(1999, 1, 1));
+        this.t0.setPosto("Socorrista");
+        this.t0.setSalario(1500D);
+        this.t0.setDataContratacion(LocalDate.of(2020, 1, 1));
 
-        this.s0.setDni("000S");
-        this.s0.setNome("Socio cero");
-        this.s0.setDataNacemento(LocalDate.now().minusYears(20));
-        this.s0.setTelefono("600000001");
-        this.s0.setDataAlta(LocalDate.now());
+        this.t1 = new Traballador();
+        this.t1.setDni("101B");
+        this.t1.setNome("Trabajador uno");
+        this.t1.setDataNacemento(LocalDate.of(1999, 1, 1));
+        this.t1.setPosto("Auxiliar");
+        this.t1.setSalario(1250D);
+        this.t1.setDataContratacion(LocalDate.of(2020, 1, 1));
 
-        this.s1.setDni("111S");
-        this.s1.setNome("Socia un");
-        this.s1.setDataNacemento(LocalDate.now().minusYears(13));
-        this.s1.setTelefono("600000002");
-        this.s1.setDataAlta(LocalDate.now());
+        this.t2 = new Traballador();
+        this.t2.setDni("102C");
+        this.t2.setNome("Trabajador dos");
+        this.t2.setDataNacemento(LocalDate.of(1999, 1, 1));
+        this.t2.setPosto("Monitor");
+        this.t2.setSalario(2500D);
+        this.t2.setDataContratacion(LocalDate.of(2020, 1, 1));
 
-        this.listaxeS.add(0, s0);
-        this.listaxeS.add(1, s1);
-
-        this.t0.setDni("000T");
-        this.t0.setNome("Traballador cero");
-        this.t0.setPosto("Monitor");
-        this.t0.setSalario(1000.0);
-        this.t0.setDataContratacion(LocalDate.now());
-
-        this.t1.setDni("111T");
-        this.t1.setNome("Traballadora un");
-        this.t1.setPosto("Socorrista");
-        this.t1.setSalario(2000.0);
-        this.t1.setDataContratacion(LocalDate.now());
-
+        this.listaxeT = new ArrayList<>();
         this.listaxeT.add(0, t0);
         this.listaxeT.add(1, t1);
+        this.listaxeT.add(2, t2);
+
+    }
+
+    public void creaSociosSoltos() {
+
+        this.s0 = new Socio();
+        this.s0.setDni("000A");
+        this.s0.setNome("Socio cero");
+        this.s0.setDataNacemento(LocalDate.of(1999, 1, 1));
+        this.s0.setTelefono("+34 1234");
+        this.s0.setDataAlta(LocalDate.now());
+
+        this.s1 = new Socio();
+        this.s1.setDni("001B");
+        this.s1.setNome("Socio uno");
+        this.s1.setDataNacemento(LocalDate.of(1999, 1, 1));
+        this.s1.setTelefono("+34 12345");
+        this.s1.setDataAlta(LocalDate.now());
+
+        this.s2 = new Socio();
+        this.s2.setDni("002C");
+        this.s2.setNome("Socio dos");
+        this.s2.setDataNacemento(LocalDate.of(1999, 1, 1));
+        this.s2.setTelefono("+34 123456");
+        this.s2.setDataAlta(LocalDate.now());
+
+        this.listaxeS = new ArrayList<>();
+        this.listaxeS.add(0, s0);
+        this.listaxeS.add(1, s1);
+        this.listaxeS.add(2, s2);
 
     }
 
     public void creaActividadesSoltas() {
 
-        // Crea duas actividades EN MEMORIA: a0, a1
-        // Sen socio nin traballador asignado (momentaneamente)
+        this.a0 = new Actividade();
+        this.a0.setNome("Actividad cero");
+        this.a0.setPiscina("Piscina cero");
+        a0.addMaterial("Flotador");
+        a0.addMaterial("Toalla");
 
-        this.a0.setNome("A001");
-        this.a0.setPiscina("Grande");
-        this.a0.engadirMaterial("Flotador");
-        this.a0.engadirMaterial("Flotador");
-        this.a0.engadirMaterial("Silbato");
+        this.a1 = new Actividade();
+        this.a1.setNome("Actividad uno");
+        this.a1.setPiscina("Piscina uno");
+        a1.addMaterial("Manguito");
+        a1.addMaterial("Silla");
 
-        this.a1.setNome("A002");
-        this.a1.setPiscina("Pequena");
-        this.a1.engadirMaterial("Churro");
-        this.a1.engadirMaterial("Gorro");
-        this.a1.engadirMaterial("Gafas");
+        this.a2 = new Actividade();
+        this.a2.setNome("Actividad dos");
+        this.a2.setPiscina("Piscina dos");
+        a2.addMaterial(("Gorro"));
+        a2.addMaterial("Banhador");
 
-        this.listaxeA.add(0, this.a0);
-        this.listaxeA.add(1, this.a1);
+        this.listaxeA = new ArrayList<>();
+        this.listaxeA.add(0, a0);
+        this.listaxeA.add(1, a1);
+        this.listaxeA.add(2, a2);
 
     }
 
-    public void creaPersoasConActividades() {
+    public void creaActividadesConSocios() {
 
-        this.creaPersoasSoltas();
+        this.creaSociosSoltos();
         this.creaActividadesSoltas();
 
-        this.s0.engadirActividade(this.a0);
-        this.s0.engadirActividade(this.a1);
-        this.s1.engadirActividade(this.a1);
+        this.s0.addActividade(this.a0);
+        this.s1.addActividade(this.a0);
+        this.s0.addActividade(this.a1);
 
-        this.t0.setActividade(this.a1);
-        this.t1.setActividade(this.a0);
+    }
+
+    public void creaActividadesConTraballadores() {
+
+        this.creaTraballadoresSoltos();
+        this.creaActividadesSoltas();
+
+        this.a0.engadirTraballador(this.t0);
+        this.a0.engadirTraballador(this.t2);
+        this.a1.engadirTraballador(this.t1);
+
+    }
+
+    public void creaActividadesConTraballadoresESocios() {
+
+        this.creaTraballadoresSoltos();
+        this.creaSociosSoltos();
+        this.creaActividadesSoltas();
+
+        this.s0.addActividade(this.a0);
+        this.s1.addActividade(this.a0);
+        this.s0.addActividade(this.a1);
+
+        this.a0.engadirTraballador(this.t0);
+        this.a0.engadirTraballador(this.t2);
+        this.a1.engadirTraballador(this.t1);
 
     }
 
     public void gravaSocios() {
+
         EntityManager em = null;
 
         try {
@@ -115,8 +171,17 @@ public class ProdutorDatosProba {
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
-            for (Socio s : this.listaxeS) {
+            Iterator<Socio> itS = this.listaxeS.iterator();
+            while (itS.hasNext()) {
+                Socio s = itS.next();
                 em.persist(s);
+                // DESCOMENTAR SE A PROPAGACION DO PERSIST NON ESTA ACTIVADA
+                /*
+                Iterator<EntradaLog> itEL = u.getEntradasLog().iterator();
+                while (itEL.hasNext()) {
+                    em.persist(itEL.next());
+                }
+                */
             }
 
             em.getTransaction().commit();
@@ -133,6 +198,7 @@ public class ProdutorDatosProba {
     }
 
     public void gravaTraballadores() {
+
         EntityManager em = null;
 
         try {
@@ -140,10 +206,17 @@ public class ProdutorDatosProba {
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
-            for (Traballador t : this.listaxeT) {
+            Iterator<Traballador> itT = this.listaxeT.iterator();
+            while (itT.hasNext()) {
+                Traballador t = itT.next();
                 em.persist(t);
                 // DESCOMENTAR SE A PROPAGACION DO PERSIST NON ESTA ACTIVADA
-                em.persist(t.getActividade());
+                /*
+                Iterator<EntradaLog> itEL = u.getEntradasLog().iterator();
+                while (itEL.hasNext()) {
+                    em.persist(itEL.next());
+                }
+                */
             }
 
             em.getTransaction().commit();
@@ -159,7 +232,8 @@ public class ProdutorDatosProba {
 
     }
 
-    public void limpaBD() {
+    public void gravaActividades() {
+
         EntityManager em = null;
 
         try {
@@ -167,13 +241,84 @@ public class ProdutorDatosProba {
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
-            for (Persoa persoa : em.createNamedQuery("Persoa.recuperaTodas", Persoa.class).getResultList())
-                em.remove(persoa);
-            for (Actividade actividade : em.createNamedQuery("Actividade.recuperaTodas", Actividade.class).getResultList())
-                em.remove(actividade);
+            Iterator<Actividade> itA = this.listaxeA.iterator();
+            while (itA.hasNext()) {
+                Actividade a = itA.next();
+                em.persist(a);
+                // DESCOMENTAR SE A PROPAGACION DO PERSIST NON ESTA ACTIVADA
+                /*
+                Iterator<Traballador> itT = a.getTraballadores().iterator();
+                while (itT.hasNext()) {
+                    em.persist(itT.next());
+                }*/
 
-            em.createNativeQuery("UPDATE taboa_ids SET ultimo_valor_id=0 WHERE nome_id='idPersoa'").executeUpdate();
-            em.createNativeQuery("UPDATE taboa_ids SET ultimo_valor_id=0 WHERE nome_id='idActividade'").executeUpdate();
+            }
+
+            em.getTransaction().commit();
+            em.close();
+
+        } catch (Exception e) {
+            if (em != null && em.isOpen()) {
+                if (em.getTransaction().isActive()) em.getTransaction().rollback();
+                em.close();
+                throw (e);
+            }
+        }
+
+    }
+
+    public void gravaPersoas() {
+
+        EntityManager em = null;
+
+        try {
+
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+
+            Iterator<Persoa> itP = this.listaxeP.iterator();
+            while (itP.hasNext()) {
+                Persoa p = itP.next();
+                em.persist(p);
+                // DESCOMENTAR SE A PROPAGACION DO PERSIST NON ESTA ACTIVADA
+                /*
+                Iterator<Traballador> itT = a.getTraballadores().iterator();
+                while (itT.hasNext()) {
+                    em.persist(itT.next());
+                }*/
+
+            }
+
+            em.getTransaction().commit();
+            em.close();
+
+        } catch (Exception e) {
+            if (em != null && em.isOpen()) {
+                if (em.getTransaction().isActive()) em.getTransaction().rollback();
+                em.close();
+                throw (e);
+            }
+        }
+
+    }
+
+
+    public void limpaBD() {
+
+        EntityManager em = null;
+
+        try {
+
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+
+            Iterator<Actividade> itA = em.createNamedQuery("Actividade.recuperaTodas", Actividade.class).getResultList().iterator();
+            while (itA.hasNext()) em.remove(itA.next());
+            Iterator<Persoa> itP = em.createNamedQuery("Persoa.recuperaTodas", Persoa.class).getResultList().iterator();
+            while (itP.hasNext()) em.remove(itP.next());
+
+            em.createNativeQuery("UPDATE taboa_ids SET ultimo_valor_id=0 WHERE nome_id='idActividad'").executeUpdate();
+            em.createNativeQuery("UPDATE taboa_ids SET ultimo_valor_id=0 WHERE nome_id='idPersona'").executeUpdate();
 
             em.getTransaction().commit();
             em.close();
