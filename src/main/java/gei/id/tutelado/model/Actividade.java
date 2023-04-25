@@ -94,12 +94,12 @@ public class Actividade implements Comparable<Actividade> {
         if (this == o) return true;
         if (!(o instanceof Actividade)) return false;
         Actividade that = (Actividade) o;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getNome(), that.getNome()) && Objects.equals(getPiscina(), that.getPiscina()) && Objects.equals(getMaterial(), that.getMaterial()) && Objects.equals(getTraballadores(), that.getTraballadores());
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getNome(), that.getNome()) && Objects.equals(getPiscina(), that.getPiscina()) && Objects.equals(getMaterial(), that.getMaterial());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getNome(), getPiscina(), getMaterial(), getTraballadores());
+        return Objects.hash(getId(), getNome(), getPiscina(), getMaterial());
     }
 
     @Override

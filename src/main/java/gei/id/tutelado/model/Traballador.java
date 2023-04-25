@@ -22,8 +22,7 @@ public class Traballador extends Persoa implements Comparable<Traballador> {
     @Column(nullable = false)
     private LocalDate dataContratacion;
 
-    @JoinColumn(nullable = false)
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Actividade actividade;
 
     public String getPosto() {
@@ -64,12 +63,12 @@ public class Traballador extends Persoa implements Comparable<Traballador> {
         if (!(o instanceof Traballador)) return false;
         if (!super.equals(o)) return false;
         Traballador that = (Traballador) o;
-        return Objects.equals(getPosto(), that.getPosto()) && Objects.equals(getSalario(), that.getSalario()) && Objects.equals(getDataContratacion(), that.getDataContratacion()) && Objects.equals(getActividade(), that.getActividade());
+        return Objects.equals(getPosto(), that.getPosto()) && Objects.equals(getSalario(), that.getSalario()) && Objects.equals(getDataContratacion(), that.getDataContratacion());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getPosto(), getSalario(), getDataContratacion(), getActividade());
+        return Objects.hash(super.hashCode(), getPosto(), getSalario(), getDataContratacion());
     }
 
     @Override
