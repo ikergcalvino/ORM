@@ -81,14 +81,14 @@ public class P03_Consultas {
         List<Traballador> traballadores;
 
         log.info("");
-        log.info("Configurando situación de partida do test -----------------------------------------------------------------------");
+        log.info("Configurando situación de partida do test ------------------------------------------------------");
 
         produtorDatos.creaActividadesConTraballadores();
         produtorDatos.gravaActividades();
 
         log.info("");
-        log.info("Inicio do test --------------------------------------------------------------------------------------------------");
-        log.info("Obxectivo: Proba de recuperación dos traballadores dunha piscina");
+        log.info("Inicio do test ---------------------------------------------------------------------------------");
+        log.info("Obxectivo: Proba da consulta Traballador.recuperaTraballadoresDePiscina\n");
 
         traballadores = traDao.recuperaTraballadoresDePiscina("Piscina cero");
         Assert.assertEquals(traballadores.get(0).getDni(), produtorDatos.t0.getDni());
@@ -104,15 +104,15 @@ public class P03_Consultas {
         List<Actividade> actividades = new ArrayList<>();
 
         log.info("");
-        log.info("Configurando situación de partida do test -----------------------------------------------------------------------");
+        log.info("Configurando situación de partida do test ------------------------------------------------------");
 
         produtorDatos.creaActividadesConSocios();
         produtorDatos.gravaActividades();
         produtorDatos.gravaSocios();
 
         log.info("");
-        log.info("Inicio do test --------------------------------------------------------------------------------------------------");
-        log.info("Obxectivo: Proba de recuperación dos socios dunha actividade que se realiza nunha piscina, os que teñen asignada outra ou os que non teñen actividade asignada");
+        log.info("Inicio do test ---------------------------------------------------------------------------------");
+        log.info("Obxectivo: Proba da consulta Socio.recuperaSociosConActividadesEn\n");
 
         socios = socDao.recuperaSociosConActividadesEn("Piscina cero");
 
@@ -136,15 +136,15 @@ public class P03_Consultas {
         List<Actividade> actividades;
 
         log.info("");
-        log.info("Configurando situación de partida do test -----------------------------------------------------------------------");
+        log.info("Configurando situación de partida do test ------------------------------------------------------");
 
         produtorDatos.creaActividadesConSocios();
         produtorDatos.gravaActividades();
         produtorDatos.gravaSocios();
 
         log.info("");
-        log.info("Inicio do test --------------------------------------------------------------------------------------------------");
-        log.info("Obxectivo: Proba de recuperación das actividades cun minumo de socios");
+        log.info("Inicio do test ---------------------------------------------------------------------------------");
+        log.info("Obxectivo: Proba da consulta Actividade.recuperaActividadesConMinSocios\n");
 
         actividades = actDao.recuperaActividadesConMinSocios(0);
         Assert.assertEquals(actividades.get(0).getNome(), produtorDatos.a0.getNome());
@@ -169,14 +169,14 @@ public class P03_Consultas {
         Double salario;
 
         log.info("");
-        log.info("Configurando situación de partida do test -----------------------------------------------------------------------");
+        log.info("Configurando situación de partida do test ------------------------------------------------------");
 
         produtorDatos.creaTraballadoresSoltos();
         produtorDatos.gravaTraballadores();
 
         log.info("");
-        log.info("Inicio do test --------------------------------------------------------------------------------------------------");
-        log.info("Obxectivo: Proba de recuperación del salario medio");
+        log.info("Inicio do test ---------------------------------------------------------------------------------");
+        log.info("Obxectivo: Proba da consulta Traballador.recuperaSalarioMedio\n");
 
         salario = traDao.recuperaSalarioMedio();
         Assert.assertEquals((Double) 1750D, salario);
