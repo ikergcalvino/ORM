@@ -24,8 +24,8 @@ public class Actividade implements Comparable<Actividade> {
     @ElementCollection(fetch = FetchType.EAGER)
     private final List<String> material = new ArrayList<>();
 
+    @OrderBy("dni ASC")
     @OneToMany(fetch = FetchType.LAZY)
-    //@OrderBy("dni ASC")
     private final SortedSet<Traballador> traballadores = new TreeSet<>();
 
     @Id

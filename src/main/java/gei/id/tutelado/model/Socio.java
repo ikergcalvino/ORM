@@ -12,6 +12,7 @@ import java.util.TreeSet;
 @Entity
 public class Socio extends Persoa {
 
+    @OrderBy("nome ASC")
     @ManyToMany(fetch = FetchType.LAZY)
     private final SortedSet<Actividade> actividades = new TreeSet<>();
 
