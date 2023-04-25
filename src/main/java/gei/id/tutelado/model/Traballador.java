@@ -22,8 +22,8 @@ public class Traballador extends Persoa implements Comparable<Traballador> {
     @Column(nullable = false)
     private LocalDate dataContratacion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Actividade actividade;
 
     public String getPosto() {

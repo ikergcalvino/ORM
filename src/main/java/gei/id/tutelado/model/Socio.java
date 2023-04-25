@@ -13,7 +13,7 @@ import java.util.TreeSet;
 public class Socio extends Persoa {
 
     @OrderBy("nome ASC")
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     private final SortedSet<Actividade> actividades = new TreeSet<>();
 
     @Column(unique = true)

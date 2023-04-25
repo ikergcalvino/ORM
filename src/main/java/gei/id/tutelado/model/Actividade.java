@@ -15,7 +15,7 @@ import java.util.*;
                 query = "SELECT a FROM Actividade a"),
         @NamedQuery(name = "Actividade.recuperaActividadesConMinSocios",
                 query = "SELECT a FROM Actividade a WHERE " +
-                        "(SELECT COUNT(s) FROM Socio s JOIN s.actividades sa WHERE sa.id = a.id) >= :minSocios")
+                        "(SELECT CAST(COUNT(s) AS int) FROM Socio s JOIN s.actividades sa WHERE sa.id = a.id) >= :minSocios")
 })
 
 @Entity
@@ -25,7 +25,7 @@ public class Actividade implements Comparable<Actividade> {
     private final List<String> material = new ArrayList<>();
 
     @OrderBy("dni ASC")
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private final SortedSet<Traballador> traballadores = new TreeSet<>();
 
     @Id

@@ -18,6 +18,9 @@ public interface ActividadeDao {
 
     Actividade recuperaPorNome(String nome);
 
+    // OPERACIONS POR ATRIBUTOS LAZY
+    Actividade restauraTraballadores(Actividade actividade);
+
     // QUERIES ADICIONAIS
     List<Actividade> recuperaTodas();
 
