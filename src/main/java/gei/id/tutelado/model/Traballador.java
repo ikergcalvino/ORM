@@ -22,7 +22,7 @@ public class Traballador extends Persoa implements Comparable<Traballador> {
     @Column(nullable = false)
     private LocalDate dataContratacion;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private Actividade actividade;
 
     public String getPosto() {

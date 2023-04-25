@@ -4,9 +4,13 @@ import gei.id.tutelado.configuracion.Configuracion;
 import gei.id.tutelado.configuracion.ConfiguracionJPA;
 import gei.id.tutelado.dao.ActividadeDao;
 import gei.id.tutelado.dao.ActividadeDaoJPA;
+import gei.id.tutelado.dao.PersoaDao;
+import gei.id.tutelado.dao.PersoaDaoJPA;
 import gei.id.tutelado.model.Actividade;
+import gei.id.tutelado.model.Traballador;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.LazyInitializationException;
 import org.junit.*;
 import org.junit.rules.TestRule;
 import org.junit.rules.TestWatcher;
@@ -21,6 +25,7 @@ public class P01_Actividades {
     private static final ProdutorDatosProba produtorDatos = new ProdutorDatosProba();
 
     private static final Configuracion cfg = new ConfiguracionJPA();
+    private static final PersoaDao perDao = new PersoaDaoJPA();
     private static final ActividadeDao actDao = new ActividadeDaoJPA();
 
     @Rule
@@ -44,6 +49,7 @@ public class P01_Actividades {
     public static void init() {
         cfg.start();
 
+        perDao.setup(cfg);
         actDao.setup(cfg);
 
         produtorDatos.setup(cfg);
@@ -164,7 +170,7 @@ public class P01_Actividades {
     }
 
     @Test
-    public void test05_Propagacion_Persist() {
+    public void test05_PropagacionPersist() {
 
         log.info("");
         log.info("Configurando situación de partida do test ------------------------------------------------------");
@@ -189,6 +195,87 @@ public class P01_Actividades {
         Assert.assertNotNull(produtorDatos.a0.getId());
         Assert.assertNotNull(produtorDatos.t0.getId());
         Assert.assertNotNull(produtorDatos.t1.getId());
+
+    }
+
+    @Test
+    public void test07_EAGER() {
+
+        Traballador t;
+        boolean excepcion = true;
+
+        log.info("");
+        log.info("Configurando situación de partida do test ------------------------------------------------------");
+
+        produtorDatos.creaActividadesConTraballadores();
+        produtorDatos.gravaActividades();
+
+        log.info("Inicio do test ---------------------------------------------------------------------------------");
+        log.info("Obxectivo: Proba da recuperación de propiedades EAGER\n");
+
+        log.info("Probando acceso inicial a propiedade EAGER -----------------------------------------------------");
+
+        t = (Traballador) perDao.recuperaPorDni(produtorDatos.t0.getDni());
+
+        try {
+            Assert.assertEquals(produtorDatos.a0.getNome(), t.getActividade().getNome());
+            excepcion = false;
+        } catch (LazyInitializationException ex) {
+            log.info(ex.getClass().getName());
+        }
+
+        Assert.assertFalse(excepcion);
+
+    }
+
+    @Test
+    public void test08_LAZY() {
+
+        Actividade a;
+        Traballador t;
+        boolean excepcion = true;
+
+        log.info("");
+        log.info("Configurando situación de partida do test ------------------------------------------------------");
+
+        produtorDatos.creaActividadesConTraballadores();
+        produtorDatos.gravaActividades();
+
+        log.info("Inicio do test ---------------------------------------------------------------------------------");
+        log.info("Obxectivo: Proba da recuperación de propiedades LAZY\n"
+                + "\t\t\t\t Casos contemplados:\n"
+                + "\t\t\t\t a) Recuperación de actividade con colección (LAZY) de traballadores \n"
+                + "\t\t\t\t b) Carga forzada de colección LAZY da dita coleccion\n"
+                + "\t\t\t\t c) Recuperacion de traballador solta con referencia (EAGER) a unha actividade\n");
+
+        log.info("Probando (excepcion tras) recuperacion LAZY ----------------------------------------------------");
+
+        a = actDao.recuperaPorNome(produtorDatos.a0.getNome());
+
+        try {
+            Assert.assertEquals(1, a.getTraballadores().size());
+            Assert.assertEquals(produtorDatos.t0, a.getTraballadores().first());
+            excepcion = false;
+        } catch (LazyInitializationException ex) {
+            log.info(ex.getClass().getName());
+        }
+
+        Assert.assertTrue(excepcion);
+
+        log.info("");
+        log.info("Probando carga forzada de coleccion LAZY -------------------------------------------------------");
+
+        a = actDao.recuperaPorNome(produtorDatos.a0.getNome());
+        a = actDao.restauraTraballadores(a);
+
+        Assert.assertEquals(2, a.getTraballadores().size());
+        Assert.assertEquals(produtorDatos.t0, a.getTraballadores().first());
+
+        log.info("");
+        log.info("Probando acceso a referencia EAGER -------------------------------------------------------------");
+
+        t = (Traballador) perDao.recuperaPorDni(produtorDatos.t0.getDni());
+        Assert.assertEquals(produtorDatos.a0.getNome(), t.getActividade().getNome());
 
     }
 

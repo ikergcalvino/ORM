@@ -25,7 +25,7 @@ public class Actividade implements Comparable<Actividade> {
     private final List<String> material = new ArrayList<>();
 
     @OrderBy("dni ASC")
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY)
     private final SortedSet<Traballador> traballadores = new TreeSet<>();
 
     @Id
