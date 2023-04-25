@@ -4,6 +4,7 @@ import gei.id.tutelado.configuracion.Configuracion;
 import gei.id.tutelado.configuracion.ConfiguracionJPA;
 import gei.id.tutelado.dao.*;
 import gei.id.tutelado.model.Actividade;
+import gei.id.tutelado.model.Persoa;
 import gei.id.tutelado.model.Socio;
 import gei.id.tutelado.model.Traballador;
 import org.apache.logging.log4j.LogManager;
@@ -73,6 +74,57 @@ public class P03_Consultas {
 
     @After
     public void tearDown() {
+    }
+
+    @Test
+    public void test06_todasP() {
+
+        List<Persoa> listaP;
+
+        log.info("");
+        log.info("Configurando situación de partida do test ------------------------------------------------------");
+
+        produtorDatos.creaActividadesConTraballadoresESocios();
+        produtorDatos.gravaActividades();
+        produtorDatos.gravaSocios();
+
+        log.info("");
+        log.info("Inicio do test ---------------------------------------------------------------------------------");
+        log.info("Obxectivo: Proba da consulta Persoa.recuperaTodas\n");
+
+        listaP = perDao.recuperaTodas();
+
+        Assert.assertEquals(6, listaP.size());
+        Assert.assertTrue(listaP.contains(produtorDatos.s0));
+        Assert.assertTrue(listaP.contains(produtorDatos.s1));
+        Assert.assertTrue(listaP.contains(produtorDatos.t0));
+        Assert.assertTrue(listaP.contains(produtorDatos.t1));
+
+    }
+
+    @Test
+    public void test06_todasA() {
+
+        List<Actividade> listaA;
+
+        log.info("");
+        log.info("Configurando situación de partida do test ------------------------------------------------------");
+
+        produtorDatos.creaActividadesConTraballadoresESocios();
+        produtorDatos.gravaActividades();
+        produtorDatos.gravaSocios();
+
+        log.info("");
+        log.info("Inicio do test ---------------------------------------------------------------------------------");
+        log.info("Obxectivo: Proba da consulta Actividade.recuperaTodas\n");
+
+        listaA = actDao.recuperaTodas();
+
+        Assert.assertEquals(3, listaA.size());
+        Assert.assertEquals(listaA.get(0).getNome(), produtorDatos.a0.getNome());
+        Assert.assertEquals(listaA.get(1).getNome(), produtorDatos.a1.getNome());
+        Assert.assertEquals(listaA.get(2).getNome(), produtorDatos.a2.getNome());
+
     }
 
     @Test
