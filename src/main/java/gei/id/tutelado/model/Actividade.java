@@ -74,12 +74,19 @@ public class Actividade implements Comparable<Actividade> {
         return traballadores;
     }
 
-    // Metodo de conveniencia para asegurarnos de que actualizamos os dous extremos da asociación ao mesmo tempo
+    // Metodos de conveniencia para asegurarnos de que actualizamos os dous extremos da asociación ao mesmo tempo
     public void engadirTraballador(Traballador traballador) {
         if (traballador.getActividade() != null) throw new RuntimeException();
         traballador.setActividade(this);
         // É un sorted set, engadimos sempre por orde de dni
         this.traballadores.add(traballador);
+    }
+
+    public void eliminarTraballador(Traballador traballador) {
+        if (traballador.getActividade() == null) throw new RuntimeException();
+        traballador.setActividade(null);
+        // É un sorted set, eliminamos sempre por orde de dni
+        this.traballadores.remove(traballador);
     }
 
     @Override
