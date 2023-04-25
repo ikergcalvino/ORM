@@ -10,7 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class ProdutorDatosProba {
@@ -171,17 +170,8 @@ public class ProdutorDatosProba {
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
-            Iterator<Socio> itS = this.listaxeS.iterator();
-            while (itS.hasNext()) {
-                Socio s = itS.next();
+            for (Socio s : this.listaxeS) {
                 em.persist(s);
-                // DESCOMENTAR SE A PROPAGACION DO PERSIST NON ESTA ACTIVADA
-                /*
-                Iterator<EntradaLog> itEL = u.getEntradasLog().iterator();
-                while (itEL.hasNext()) {
-                    em.persist(itEL.next());
-                }
-                */
             }
 
             em.getTransaction().commit();
@@ -206,17 +196,8 @@ public class ProdutorDatosProba {
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
-            Iterator<Traballador> itT = this.listaxeT.iterator();
-            while (itT.hasNext()) {
-                Traballador t = itT.next();
+            for (Traballador t : this.listaxeT) {
                 em.persist(t);
-                // DESCOMENTAR SE A PROPAGACION DO PERSIST NON ESTA ACTIVADA
-                /*
-                Iterator<EntradaLog> itEL = u.getEntradasLog().iterator();
-                while (itEL.hasNext()) {
-                    em.persist(itEL.next());
-                }
-                */
             }
 
             em.getTransaction().commit();
@@ -241,17 +222,8 @@ public class ProdutorDatosProba {
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
-            Iterator<Actividade> itA = this.listaxeA.iterator();
-            while (itA.hasNext()) {
-                Actividade a = itA.next();
+            for (Actividade a : this.listaxeA) {
                 em.persist(a);
-                // DESCOMENTAR SE A PROPAGACION DO PERSIST NON ESTA ACTIVADA
-                /*
-                Iterator<Traballador> itT = a.getTraballadores().iterator();
-                while (itT.hasNext()) {
-                    em.persist(itT.next());
-                }*/
-
             }
 
             em.getTransaction().commit();
@@ -276,17 +248,8 @@ public class ProdutorDatosProba {
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
-            Iterator<Persoa> itP = this.listaxeP.iterator();
-            while (itP.hasNext()) {
-                Persoa p = itP.next();
+            for (Persoa p : this.listaxeP) {
                 em.persist(p);
-                // DESCOMENTAR SE A PROPAGACION DO PERSIST NON ESTA ACTIVADA
-                /*
-                Iterator<Traballador> itT = a.getTraballadores().iterator();
-                while (itT.hasNext()) {
-                    em.persist(itT.next());
-                }*/
-
             }
 
             em.getTransaction().commit();
@@ -312,10 +275,10 @@ public class ProdutorDatosProba {
             em = emf.createEntityManager();
             em.getTransaction().begin();
 
-            Iterator<Actividade> itA = em.createNamedQuery("Actividade.recuperaTodas", Actividade.class).getResultList().iterator();
-            while (itA.hasNext()) em.remove(itA.next());
-            Iterator<Persoa> itP = em.createNamedQuery("Persoa.recuperaTodas", Persoa.class).getResultList().iterator();
-            while (itP.hasNext()) em.remove(itP.next());
+            for (Actividade actividade : em.createNamedQuery("Actividade.recuperaTodas", Actividade.class).getResultList())
+                em.remove(actividade);
+            for (Persoa persoa : em.createNamedQuery("Persoa.recuperaTodas", Persoa.class).getResultList())
+                em.remove(persoa);
 
             em.createNativeQuery("UPDATE taboa_ids SET ultimo_valor_id=0 WHERE nome_id='idActividad'").executeUpdate();
             em.createNativeQuery("UPDATE taboa_ids SET ultimo_valor_id=0 WHERE nome_id='idPersona'").executeUpdate();

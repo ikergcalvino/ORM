@@ -22,7 +22,7 @@ public class P03_Consultas {
 
     private final Logger log = LogManager.getLogger("gei.id.tutelado");
 
-    private static ProdutorDatosProba produtorDatos = new ProdutorDatosProba();
+    private static final ProdutorDatosProba produtorDatos = new ProdutorDatosProba();
 
     private static final Configuracion cfg = new ConfiguracionJPA();
     private static final PersoaDao perDao = new PersoaDaoJPA();
@@ -34,21 +34,21 @@ public class P03_Consultas {
     public TestRule watcher = new TestWatcher() {
         protected void starting(Description description) {
             log.info("");
-            log.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+            log.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
             log.info("Iniciando test: " + description.getMethodName());
-            log.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+            log.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
         }
 
         protected void finished(Description description) {
             log.info("");
-            log.info("-----------------------------------------------------------------------------------------------------------------------------------------");
+            log.info("--------------------------------------------------------------------------------------------");
             log.info("Finalizado test: " + description.getMethodName());
-            log.info("-----------------------------------------------------------------------------------------------------------------------------------------");
+            log.info("--------------------------------------------------------------------------------------------");
         }
     };
 
     @BeforeClass
-    public static void init() throws Exception {
+    public static void init() {
         cfg.start();
 
         perDao.setup(cfg);
@@ -60,23 +60,78 @@ public class P03_Consultas {
     }
 
     @AfterClass
-    public static void endclose() throws Exception {
+    public static void endclose() {
         cfg.endUp();
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         log.info("");
-        log.info("Limpando BD --------------------------------------------------------------------------------------------");
+        log.info("Limpando BD ------------------------------------------------------------------------------------");
         produtorDatos.limpaBD();
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
     }
 
     @Test
-    public void test06_RecuperaActividadesConMinSocios() {
+    public void test06_INNER() {
+
+        List<Traballador> traballadores;
+
+        log.info("");
+        log.info("Configurando situación de partida do test -----------------------------------------------------------------------");
+
+        produtorDatos.creaActividadesConTraballadores();
+        produtorDatos.gravaActividades();
+
+        log.info("");
+        log.info("Inicio do test --------------------------------------------------------------------------------------------------");
+        log.info("Obxectivo: Proba de recuperación dos traballadores dunha piscina");
+
+        traballadores = traDao.recuperaTraballadoresDePiscina("Piscina cero");
+        Assert.assertEquals(traballadores.get(0).getDni(), produtorDatos.t0.getDni());
+        Assert.assertEquals(traballadores.get(1).getDni(), produtorDatos.t2.getDni());
+        Assert.assertEquals(traballadores.size(), 2);
+    }
+
+    @Test
+    public void test06_OUTER() {
+
+        List<Socio> socios;
+
+        List<Actividade> actividades = new ArrayList<>();
+
+        log.info("");
+        log.info("Configurando situación de partida do test -----------------------------------------------------------------------");
+
+        produtorDatos.creaActividadesConSocios();
+        produtorDatos.gravaActividades();
+        produtorDatos.gravaSocios();
+
+        log.info("");
+        log.info("Inicio do test --------------------------------------------------------------------------------------------------");
+        log.info("Obxectivo: Proba de recuperación dos socios dunha actividade que se realiza nunha piscina, os que teñen asignada outra ou os que non teñen actividade asignada");
+
+        socios = socDao.recuperaSociosConActividadesEn("Piscina cero");
+
+        Assert.assertEquals(socios.get(0).getDni(), produtorDatos.s0.getDni());
+        Assert.assertEquals(socios.get(1).getDni(), produtorDatos.s1.getDni());
+
+        Assert.assertEquals(socios.get(0).getActividades().first().getPiscina(),
+                produtorDatos.s0.getActividades().first().getPiscina(), "Piscina cero");
+        Assert.assertEquals(socios.get(1).getActividades().first().getPiscina(),
+                produtorDatos.s1.getActividades().first().getPiscina(), "Piscina cero");
+
+        Assert.assertNotEquals(socios.get(2).getActividades(), actividades);
+
+        Assert.assertEquals(socios.size(), 3);
+
+    }
+
+    @Test
+    public void test06_Subconsulta() {
 
         List<Actividade> actividades;
 
@@ -109,7 +164,7 @@ public class P03_Consultas {
     }
 
     @Test
-    public void test06_RecuperaSalarioMedio() {
+    public void test06_Agregacion() {
 
         Double salario;
 
@@ -125,62 +180,6 @@ public class P03_Consultas {
 
         salario = traDao.recuperaSalarioMedio();
         Assert.assertEquals((Double) 1750D, salario);
-
-    }
-
-
-    @Test
-    public void test06_RecuperaTraballadoresDePiscina() {
-
-        List<Traballador> traballadores;
-
-        log.info("");
-        log.info("Configurando situación de partida do test -----------------------------------------------------------------------");
-
-        produtorDatos.creaActividadesConTraballadores();
-        produtorDatos.gravaActividades();
-
-        log.info("");
-        log.info("Inicio do test --------------------------------------------------------------------------------------------------");
-        log.info("Obxectivo: Proba de recuperación dos traballadores dunha piscina");
-
-        traballadores = traDao.recuperaTraballadoresDePiscina("Piscina cero");
-        Assert.assertEquals(traballadores.get(0).getDni(), produtorDatos.t0.getDni());
-        Assert.assertEquals(traballadores.get(1).getDni(), produtorDatos.t2.getDni());
-        Assert.assertEquals(traballadores.size(), 2);
-    }
-
-    @Test
-    public void test06_RecuperaSociosConActividadesEn() {
-
-        List<Socio> socios;
-
-        List<Actividade> actividades = new ArrayList<>();
-
-        log.info("");
-        log.info("Configurando situación de partida do test -----------------------------------------------------------------------");
-
-        produtorDatos.creaActividadesConSocios();
-        produtorDatos.gravaActividades();
-        produtorDatos.gravaSocios();
-
-        log.info("");
-        log.info("Inicio do test --------------------------------------------------------------------------------------------------");
-        log.info("Obxectivo: Proba de recuperación dos socios dunha actividade que se realiza nunha piscina, os que teñen asignada outra ou os que non teñen actividade asignada");
-
-        socios = socDao.recuperaSociosConActividadesEn("Piscina cero");
-
-        Assert.assertEquals(socios.get(0).getDni(), produtorDatos.s0.getDni());
-        Assert.assertEquals(socios.get(1).getDni(), produtorDatos.s1.getDni());
-
-        Assert.assertEquals(socios.get(0).getActividades().first().getPiscina(),
-                produtorDatos.s0.getActividades().first().getPiscina(), "Piscina cero");
-        Assert.assertEquals(socios.get(1).getActividades().first().getPiscina(),
-                produtorDatos.s1.getActividades().first().getPiscina(), "Piscina cero");
-
-        Assert.assertNotEquals(socios.get(2).getActividades(), actividades);
-
-        Assert.assertEquals(socios.size(), 3);
 
     }
 
