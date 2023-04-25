@@ -66,7 +66,7 @@ public class Actividade implements Comparable<Actividade> {
         return material;
     }
 
-    public void engadirMaterial(String material) {
+    public void addMaterial(String material) {
         this.material.add(material);
     }
 

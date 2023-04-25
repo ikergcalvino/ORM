@@ -42,7 +42,7 @@ public class Socio extends Persoa {
         return actividades;
     }
 
-    public void engadirActividade(Actividade actividade) {
+    public void addActividade(Actividade actividade) {
         // É un sorted set, engadimos sempre por orde de nome
         this.actividades.add(actividade);
     }
