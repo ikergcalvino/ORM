@@ -16,7 +16,7 @@
         <java.version>8</java.version>
         <junit.version>4.12</junit.version>
         <log4j.version>2.12.4</log4j.version>
-        <postgresql.version>42.2.2</postgresql.version>
+        <postgresql.version>42.3.9</postgresql.version>
         <hibernate.version>5.4.21.Final</hibernate.version>
     </properties>
 
